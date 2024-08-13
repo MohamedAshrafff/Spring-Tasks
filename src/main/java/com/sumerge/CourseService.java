@@ -2,11 +2,12 @@ package com.sumerge;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import com.sumerge.task3.*;
 
 import java.util.List;
 
-@Service
 public class CourseService {
     private CourseRecommender courseRecommender;
 
@@ -16,12 +17,11 @@ public class CourseService {
 
 
     //  2 - Using Qualifier
-    @Autowired
+
     public CourseService (@Qualifier("basicRecommenderBean") CourseRecommender courseRecommender){
         this.courseRecommender = courseRecommender;
     }
-
-    @Autowired
+    // won't be invoked as we explicitly are calling the constructor now
     public void setCourseRecommender(@Qualifier("advancedRecommenderBean") CourseRecommender courseRecommender) {
         this.courseRecommender = courseRecommender;
     }

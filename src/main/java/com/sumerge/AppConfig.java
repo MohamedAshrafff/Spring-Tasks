@@ -1,18 +1,21 @@
 package com.sumerge;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.*;
+import com.sumerge.task3.*;
 
 @Configuration
 @ComponentScan("com.sumerge")
 public class AppConfig {
 
+    @Bean
+    public CourseService courseService(@Qualifier("advancedRecommenderBean") CourseRecommender courseRecommender){
+        return new CourseService(courseRecommender);
+    }
+
     @Bean(name = "basicRecommenderBean")
-     // 1 - Using Primary gives Precedence
-    @Primary
-    public CourseRecommender basicCoursesRecommender() { return new BasicCourses();}
+    @Primary // 1 - Using Primary gives Precedence
+    public CourseRecommender basicCoursesRecommender() { return new MidCourses();}
 
     @Bean(name = "advancedRecommenderBean")
     public CourseRecommender advancedCoursesRecommender() { return new AdvancedCourses();}

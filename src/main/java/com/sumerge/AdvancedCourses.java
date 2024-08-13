@@ -5,9 +5,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.sumerge.task3.*;
 
-
-@Component
 public class AdvancedCourses implements CourseRecommender {
 
     @Override
