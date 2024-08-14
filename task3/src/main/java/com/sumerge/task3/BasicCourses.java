@@ -1,6 +1,6 @@
 package com.sumerge.task3;
 
-import org.springframework.stereotype.Component;
+import com.sumerge.task3.DatabaseClasses.Course;
 
 import java.util.ArrayList;
 import java.util.Arrays;
