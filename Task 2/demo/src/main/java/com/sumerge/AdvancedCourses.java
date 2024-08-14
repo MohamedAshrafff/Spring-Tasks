@@ -1,5 +1,6 @@
 package com.sumerge;
 
+import com.sumerge.task3.DatabaseClasses.Course;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

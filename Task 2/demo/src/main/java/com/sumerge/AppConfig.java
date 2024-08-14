@@ -1,20 +1,40 @@
 package com.sumerge;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 import com.sumerge.task3.*;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("com.sumerge")
 public class AppConfig {
 
     @Bean
-    public CourseService courseService(@Qualifier("advancedRecommenderBean") CourseRecommender courseRecommender){
-        return new CourseService(courseRecommender);
+    @Primary
+    public DriverManagerDataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/Course_Management");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("12345");
+        return dataSource;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(){
+        return new JdbcTemplate(dataSource()) ;
+    };
+
+    @Bean
+    public CourseService courseService(@Qualifier("basicRecommenderBean") CourseRecommender courseRecommender){
+        return new CourseService(courseRecommender , jdbcTemplate());
     }
 
     @Bean(name = "basicRecommenderBean")
-    @Primary // 1 - Using Primary gives Precedence
     public CourseRecommender basicCoursesRecommender() { return new MidCourses();}
 
     @Bean(name = "advancedRecommenderBean")
