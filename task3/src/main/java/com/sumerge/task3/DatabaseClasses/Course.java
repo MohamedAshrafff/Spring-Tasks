@@ -6,11 +6,13 @@ public class Course {
     private int courseCredit;
     private int author_id;
 
+    public Course(){}
+
     public Course(String courseName, String courseDescription, int author_id, int courseCredit) {
         this.courseName = courseName;
         this.courseDescription = courseDescription;
-        this.author_id = author_id;
         this.courseCredit = courseCredit;
+        this.author_id = author_id;
     }
 
 

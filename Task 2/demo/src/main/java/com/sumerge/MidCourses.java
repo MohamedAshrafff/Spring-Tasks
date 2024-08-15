@@ -2,8 +2,6 @@ package com.sumerge;
 
 import com.sumerge.task3.*;
 import com.sumerge.task3.DatabaseClasses.Course;
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
