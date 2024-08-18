@@ -1,3 +1,11 @@
 com\sumerge\AdvancedCourses.class
+com\sumerge\repos\JPACourseRepository.class
+com\sumerge\services\CourseService.class
+com\sumerge\configs\AppConfig.class
+com\sumerge\configs\SwaggerConfig.class
+com\sumerge\repos\CourseRepository.class
 com\sumerge\MidCourses.class
-com\sumerge\CourseService.class
+com\sumerge\controllers\CourseController.class
+com\sumerge\CourseMapperImpl.class
+com\sumerge\Task69138Application.class
+com\sumerge\CourseMapper.class

@@ -1,57 +1,55 @@
 package com.sumerge.task3.DatabaseClasses;
 
+import javax.persistence.*;
+
+@Entity
 public class Author {
-    private int authorId;
-    private String authorName;
-    private String authorEmail;
-    private String authorDate;
-    private int course_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int author_id;
+    private String author_name;
+    @Column(unique = true)
+    private String author_email;
+    private String author_birthdate;
 
-    public Author(int authorId, int course_id, String authorDate, String authorEmail, String authorName) {
-        this.authorId = authorId;
-        this.course_id = course_id;
-        this.authorDate = authorDate;
-        this.authorEmail = authorEmail;
-        this.authorName = authorName;
+    public Author(){}
+
+    public Author(String author_name, String author_email, String author_birthdate) {
+        this.author_name = author_name;
+        this.author_email = author_email;
+        this.author_birthdate = author_birthdate;
     }
 
-    public int getAuthorId() {
-        return authorId;
+    public int getAuthor_id() {
+        return author_id;
     }
 
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
+    public void setAuthor_id(int author_id) {
+        this.author_id = author_id;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthor_name() {
+        return author_name;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setAuthor_name(String author_name) {
+        this.author_name = author_name;
     }
 
-    public String getAuthorEmail() {
-        return authorEmail;
+    public String getAuthor_email() {
+        return author_email;
     }
 
-    public void setAuthorEmail(String authorEmail) {
-        this.authorEmail = authorEmail;
+    public void setAuthor_email(String author_email) {
+        this.author_email = author_email;
     }
 
-    public String getAuthorDate() {
-        return authorDate;
+
+    public String getAuthor_birthdate() {
+        return author_birthdate;
     }
 
-    public void setAuthorDate(String authorDate) {
-        this.authorDate = authorDate;
-    }
-
-    public int getCourse_id() {
-        return course_id;
-    }
-
-    public void setCourse_id(int course_id) {
-        this.course_id = course_id;
+    public void setAuthor_birthdate(String author_birthdate) {
+        this.author_birthdate = author_birthdate;
     }
 }
