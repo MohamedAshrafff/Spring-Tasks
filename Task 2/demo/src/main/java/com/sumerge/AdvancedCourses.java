@@ -1,5 +1,6 @@
 package com.sumerge;
 
+import com.sumerge.repos.CourseRepository;
 import com.sumerge.task3.DatabaseClasses.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;

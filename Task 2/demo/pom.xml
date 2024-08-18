@@ -6,8 +6,17 @@
 	<artifactId>sumerge-task2</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<dependencies>
+		<!--SPRINGBOOT WEB-->
 		<dependency>
-			<groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-web</artifactId> <version>2.4.4</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>2.4.4</version>
+		</dependency>
+		<!--JPA-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>2.4.0</version>
 		</dependency>
 
 		<dependency>
@@ -15,11 +24,19 @@
 			<artifactId>spring-context</artifactId>
 			<version>5.3.15</version>
 		</dependency>
+
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>5.3.15</version>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>com.task</groupId>
 			<artifactId>sumerge-task3</artifactId>
@@ -30,28 +47,45 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>5.3.22</version>
 		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.5.5.Final</version> <!-- Check for the latest version -->
+		</dependency>
+
+		<!-- Annotation processor for MapStruct -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>1.5.5.Final</version> <!-- Check for the latest version -->
+		</dependency>
+		<!--POSTGRESS DEPENDANCY-->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.2.14</version>
 		</dependency>
+
+		<!--SWAGGER-->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
 		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

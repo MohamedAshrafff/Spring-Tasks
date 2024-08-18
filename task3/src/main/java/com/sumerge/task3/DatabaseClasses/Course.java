@@ -1,39 +1,49 @@
 package com.sumerge.task3.DatabaseClasses;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+@Entity
 public class Course {
-    private String courseName;
-    private String courseDescription;
-    private int courseCredit;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int course_id;
+
+    private String course_name;
+    private String course_description;
+    private int course_credit;
     private int author_id;
 
     public Course(){}
 
-    public Course(String courseName, String courseDescription, int author_id, int courseCredit) {
-        this.courseName = courseName;
-        this.courseDescription = courseDescription;
-        this.courseCredit = courseCredit;
-        this.author_id = author_id;
+    public Course(String course_name){
+        this.course_name = course_name;
     }
 
-
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public Course(String course_name, String course_description, int author_course_id, int course_credit) {
+        this.course_name = course_name;
+        this.course_description = course_description;
+        this.course_credit = course_credit;
+        this.author_id = author_course_id;
     }
 
-    public String getCourseDescription() {
-        return courseDescription;
+    public Course(String course_name, int course_id, int author_course_id, int course_credit, String course_description) {
+        this.course_name = course_name;
+        this.course_id = course_id;
+        this.author_id = author_course_id;
+        this.course_credit = course_credit;
+        this.course_description = course_description;
     }
 
-    public void setCourseDescription(String courseDescription) {
-        this.courseDescription = courseDescription;
+    public int getCourse_id() {
+        return course_id;
     }
 
-    public int getCourseCredit() {
-        return courseCredit;
-    }
-
-    public void setCourseCredit(int courseCredit) {
-        this.courseCredit = courseCredit;
+    public void setCourse_id(int course_id) {
+        this.course_id = course_id;
     }
 
     public int getAuthor_id() {
@@ -44,12 +54,27 @@ public class Course {
         this.author_id = author_id;
     }
 
-    public Course(String courseName) {
-        this.courseName = courseName;
+    public int getCourse_credit() {
+        return course_credit;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public void setCourse_credit(int course_credit) {
+        this.course_credit = course_credit;
     }
 
+    public String getCourse_description() {
+        return course_description;
+    }
+
+    public void setCourse_description(String course_description) {
+        this.course_description = course_description;
+    }
+
+    public String getCourse_name() {
+        return course_name;
+    }
+
+    public void setCourse_name(String course_name) {
+        this.course_name = course_name;
+    }
 }
