@@ -2,7 +2,7 @@ com\sumerge\task3\Task3Application.class
 com\sumerge\task3\BasicCourses.class
 com\sumerge\task3\CourseRecommender.class
 com\sumerge\task3\DatabaseClasses\CourseDTO.class
-com\sumerge\task3\DatabaseClasses\Assesment.class
 com\sumerge\task3\DatabaseClasses\Author.class
 com\sumerge\task3\DatabaseClasses\Course.class
 com\sumerge\task3\DatabaseClasses\Rating.class
+com\sumerge\task3\DatabaseClasses\Assessment.class

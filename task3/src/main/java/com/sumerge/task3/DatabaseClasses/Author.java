@@ -1,8 +1,14 @@
 package com.sumerge.task3.DatabaseClasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(name = "author")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +17,19 @@ public class Author {
     @Column(unique = true)
     private String author_email;
     private String author_birthdate;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "authors")
+    private Set<Course> courses  = new HashSet<>();
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
 
     public Author(){}
 

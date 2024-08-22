@@ -1,37 +1,53 @@
 package com.sumerge.task3.DatabaseClasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "rating" )
 public class Rating {
-    private int ratingId;
-    private int ratingNumber;
-    private int courseId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int rating_id;
+    private int rating_number;
 
-    public Rating(int ratingId, int ratingNumber, int courseId) {
-        this.ratingId = ratingId;
-        this.ratingNumber = ratingNumber;
-        this.courseId = courseId;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    @JsonIgnore
+    private Course course;
+
+
+    public Rating() {}
+
+    public Rating(int rating_id, int rating_number, Course course) {
+        this.rating_id = rating_id;
+        this.rating_number = rating_number;
+        this.course = course;
     }
 
-    public int getRatingId() {
-        return ratingId;
+    public int getRating_id() {
+        return rating_id;
     }
 
-    public void setRatingId(int ratingId) {
-        this.ratingId = ratingId;
+    public void setRating_id(int rating_id) {
+        this.rating_id = rating_id;
     }
 
-    public int getRatingNumber() {
-        return ratingNumber;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setRatingNumber(int ratingNumber) {
-        this.ratingNumber = ratingNumber;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public int getRating_number() {
+        return rating_number;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setRating_number(int rating_number) {
+        this.rating_number = rating_number;
     }
 }

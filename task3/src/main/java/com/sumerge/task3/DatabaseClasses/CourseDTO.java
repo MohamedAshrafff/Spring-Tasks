@@ -4,13 +4,14 @@ public class CourseDTO {
     private int course_id;
     private String course_name;
     private String course_description;
-
+    private String assessment_id;
     public CourseDTO() {}
 
-    public CourseDTO(String course_name, int course_id, String course_description) {
+    public CourseDTO(String course_name, int course_id, String course_description , String assessment_id) {
         this.course_name = course_name;
         this.course_id = course_id;
         this.course_description = course_description;
+        this.assessment_id = assessment_id;
     }
 
     public String getCourse_name() {
