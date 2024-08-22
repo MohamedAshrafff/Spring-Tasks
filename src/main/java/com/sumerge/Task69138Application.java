@@ -1,18 +1,17 @@
 package com.sumerge;
 
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@ComponentScan("com.sumerge")
+
+@SpringBootApplication
+@EnableSwagger2
 public class Task69138Application {
-
-
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
-		CourseService service = applicationContext.getBean(CourseService.class);
-		service.getRecommendedCourses().forEach(course -> System.out.println(course.getCourseName()));
-		}
 
+		SpringApplication.run(Task69138Application.class, args);
+
+	}
 }
