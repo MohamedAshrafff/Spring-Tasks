@@ -2,7 +2,7 @@ package com.sumerge.mappers;
 
 
 import com.sumerge.task3.DatabaseClasses.Course;
-import com.sumerge.task3.DatabaseClasses.CourseDTO;
+import com.sumerge.task3.DTOs.CourseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

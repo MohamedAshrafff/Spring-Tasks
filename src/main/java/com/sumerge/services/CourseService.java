@@ -8,6 +8,7 @@ import com.sumerge.repos.JPAAuthorRepository;
 import com.sumerge.repos.JPACourseRepository;
 import com.sumerge.repos.JPARatingRepository;
 import com.sumerge.task3.CourseRecommender;
+import com.sumerge.task3.DTOs.CourseDTO;
 import com.sumerge.task3.DatabaseClasses.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 public class CourseService {
@@ -51,8 +53,10 @@ public class CourseService {
         this.courseRecommender = courseRecommender;
     }
 
-    public List<Course> getRecommendedCourses() {
-        return courseRecommender.recommendedCourses();
+    public List<CourseDTO> getRecommendedCourses() {
+        return courseRecommender.recommendedCourses().stream().map(
+                course -> courseMapper.courseToCourseDTO(course)
+        ).collect(Collectors.toList());
     }
 
 
@@ -64,18 +68,27 @@ public class CourseService {
          return newCourse.get();
     }
 
+    public CourseDTO getCourseByIdDTO(int id){
+        Optional<Course> newCourse = jpaCourseRepository.findById(id);
+        if(!newCourse.isPresent()){
+            throw new NotFoundException("Course Id of "+id+" not found");
+        }
+        return courseMapper.courseToCourseDTO(newCourse.get());
+    }
+
     public String deleteCourse(int id){
         getCourseById(id);
         jpaCourseRepository.deleteById(id);
         return "Deleted course successfully";
     }
 
-    public Course updateCourse(int id, Course course){
-        Course newCourse = getCourseById(id);
-        return jpaCourseRepository.save(newCourse);
+    public CourseDTO updateCourse(int id, Course course) {
+        getCourseById(id);
+        return courseMapper.courseToCourseDTO(jpaCourseRepository.save(course));
     }
 
-    public Course addCourse(Course course){
+
+    public CourseDTO addCourse(Course course){
         if(jpaCourseRepository.findById(course.getCourse_id()).isPresent()){
             throw new AlreadyExistException("Course Id of "+course.getCourse_id()+" already exist");
         }
@@ -86,7 +99,7 @@ public class CourseService {
         if (course.getCourse_description() == null || course.getCourse_description().trim().isEmpty()) {
             throw new IllegalArgumentException("Course description cannot be empty or null");
         }
-        return jpaCourseRepository.save(course);
+        return courseMapper.courseToCourseDTO(jpaCourseRepository.save(course));
     }
 
     public CourseDTO getCourseDTOById(int id){
@@ -94,7 +107,7 @@ public class CourseService {
         return courseMapper.courseToCourseDTO(newCourse);
     }
 
-    public List<Course> getPaginatedCourses(int page, int size) {
+    public List<CourseDTO> getPaginatedCourses(int page, int size) {
         if(page<0){
             throw new IllegalArgumentException("Page number cannot be less than zero");
         }
@@ -102,11 +115,16 @@ public class CourseService {
             throw new IllegalArgumentException("Size cannot be less than zero to be able to see responses");
         }
         Pageable pageable = PageRequest.of(page, size);
-        Page<Course> pageCourse =  jpaCourseRepository.findAll(pageable);
-        return pageCourse.getContent();
+        Page<Course> pageCourses =  jpaCourseRepository.findAll(pageable);
+
+        Page<CourseDTO> pageCourseDTOs = pageCourses.map(course -> {
+            return courseMapper.courseToCourseDTO(course);
+        });
+
+        return pageCourseDTOs.getContent();
     }
 
-    public Course addAuthorToCourse(int courseId, int authorId){
+    public CourseDTO addAuthorToCourse(int courseId, int authorId){
         Course course = getCourseById(courseId);
         Author author = authorService.getAuthorById(authorId);
         if(course.getAuthors().contains(author)){
@@ -114,10 +132,10 @@ public class CourseService {
         }
         course.getAuthors().add(author);
         jpaAuthorRepository.save(author);
-        return jpaCourseRepository.save(course);
+        return courseMapper.courseToCourseDTO(jpaCourseRepository.save(course));
     }
 
-    public Course addRatingToCourse(int courseId, int ratingId){
+    public CourseDTO addRatingToCourse(int courseId, int ratingId){
         Course course = getCourseById(courseId);
         Rating rating = ratingService.getRatingById(ratingId);
         rating.setCourse(course);
@@ -126,18 +144,18 @@ public class CourseService {
         }
         course.getRatings().add(rating);
         jpaRatingRepository.save(rating);
-        return jpaCourseRepository.save(course);
+        return courseMapper.courseToCourseDTO(jpaCourseRepository.save(course));
     }
 
-    public Course addAssessmentToCourse(int courseId, int assessmentId){
+    public CourseDTO addAssessmentToCourse(int courseId, int assessmentId){
         Course course = getCourseById(courseId);
-        Assessment assessment = assessmentService.getAssessmentbyId(assessmentId);
+        Assessment assessment = assessmentService.getAssessmentById(assessmentId);
         if (course.getAssessment() == assessment || course.getAssessment() != null) {
             throw new AlreadyExistException("Assessment Already Exist for Course ID "+assessmentId);
         }
         course.setAssessment(assessment);
         jpaAssessmentRepository.save(assessment);
-        return jpaCourseRepository.save(course);
+        return courseMapper.courseToCourseDTO(jpaCourseRepository.save(course));
     }
 
 }

@@ -3,6 +3,7 @@ package com.sumerge.controllers;
 
 import com.sumerge.services.RatingService;
 import com.sumerge.task3.DatabaseClasses.Rating;
+import com.sumerge.task3.DTOs.RatingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,17 @@ public class RatingController {
     RatingService ratingService;
 
     @GetMapping("/all")
-    public List<Rating> getAllRatings() {
+    public List<RatingDTO> getAllRatings() {
         return ratingService.getAllRatings();
     }
 
     @GetMapping("/{id}")
-    public Rating getRating(@PathVariable int id) {
-        return ratingService.getRatingById(id);
+    public RatingDTO getRating(@PathVariable int id) {
+        return ratingService.getRatingByIdDTO(id);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Rating> addRating(@RequestBody Rating rating) {
+    public ResponseEntity<RatingDTO> addRating(@RequestBody Rating rating) {
         return new ResponseEntity<>(ratingService.addRating(rating) , HttpStatus.CREATED);
     }
 }

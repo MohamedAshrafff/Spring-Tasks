@@ -9,6 +9,7 @@ import com.sumerge.repos.JPACourseRepository;
 import com.sumerge.repos.JPARatingRepository;
 import com.sumerge.task3.CourseRecommender;
 import com.sumerge.task3.DatabaseClasses.*;
+import com.sumerge.task3.DTOs.CourseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -110,9 +111,9 @@ class CourseServiceTest {
         when(jpaCourseRepository.findById(1)).thenReturn(Optional.of(course));
         when(jpaCourseRepository.save(course)).thenReturn(updatedCourse);
 
-        Course updatedCourseFound = courseService.updateCourse(1, course);
+        CourseDTO updatedCourseFound = courseService.updateCourse(1, course);
 
-        assertEquals(updatedCourse, updatedCourseFound);
+        assertEquals(courseMapper.courseToCourseDTO(updatedCourse), updatedCourseFound);
     }
 
     @Test
@@ -303,7 +304,7 @@ class CourseServiceTest {
         Assessment assessment = new Assessment();
         assessment.setAssessment_content("assessment content");
         when(jpaCourseRepository.findById(1)).thenReturn(Optional.of(course));
-        when(assessmentService.getAssessmentbyId(1)).thenReturn(assessment);
+        when(assessmentService.getAssessmentById(1)).thenReturn(assessment);
         assertDoesNotThrow(() -> courseService.addAssessmentToCourse(1 ,1));
         verify(jpaCourseRepository , times(1)).save(course);
         verify(jpaAssessmentRepository , times(1)).save(assessment);
@@ -316,7 +317,7 @@ class CourseServiceTest {
         assessment.setAssessment_content("assessment content");
         course.setAssessment(assessment);
         when(jpaCourseRepository.findById(1)).thenReturn(Optional.of(course));
-        when(assessmentService.getAssessmentbyId(1)).thenReturn(assessment);
+        when(assessmentService.getAssessmentById(1)).thenReturn(assessment);
         assertThrows(AlreadyExistException.class,() -> courseService.addAssessmentToCourse(1 ,1));
         verify(jpaCourseRepository , times(0)).save(course);
         verify(jpaAssessmentRepository , times(0)).save(assessment);
@@ -332,5 +333,26 @@ class CourseServiceTest {
         verify(jpaCourseRepository , times(0)).save(course);
         verify(jpaAssessmentRepository , times(0)).save(assessment);
     }
+
+    @Test
+    void getCourseByIdDTO_Successful() {
+        Course course = new Course();
+        course.setCourse_description("content");
+        CourseDTO courseDTO = new CourseDTO();
+        when(jpaCourseRepository.findById(1)).thenReturn(Optional.of(course));
+        when(courseMapper.courseToCourseDTO(course)).thenReturn(courseDTO);
+
+        CourseDTO result = courseService.getCourseByIdDTO(1);
+        System.out.println(result + " " +courseDTO);
+        assertEquals(courseDTO, result);
+
+    }
+
+    @Test
+    void getAssessmentByIdDTO_NotSuccessful() {
+        when(jpaCourseRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class , () -> courseService.getCourseByIdDTO(1));
+    }
+
 
 }

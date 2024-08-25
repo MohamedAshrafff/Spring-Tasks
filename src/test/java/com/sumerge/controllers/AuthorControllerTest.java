@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sumerge.exceptions.NotFoundException;
 
 import com.sumerge.services.AuthorService;
+import com.sumerge.task3.DTOs.AuthorDTO;
 import com.sumerge.task3.DatabaseClasses.Author;
 import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
@@ -50,7 +51,7 @@ class AuthorControllerTest {
 
     @Test
     public void addAuthorSuccessful() throws Exception {
-        when(authorService.addAuthor(author)).thenReturn(author);
+        when(authorService.addAuthor(author)).thenReturn(new AuthorDTO());
 
         String authorJson = objectMapper.writeValueAsString(author);
 
@@ -72,7 +73,7 @@ class AuthorControllerTest {
 
     @Test
     void getByIdNotSuccessful() throws Exception {
-        when(authorService.getAuthorById(1)).thenThrow( new NotFoundException("Author with id 1 not found"));
+        when(authorService.getAuthorByIdDto(1)).thenThrow( new NotFoundException("Author with id 1 not found"));
         mockMvc.perform(get("/api/authors/1"))
                         .andExpect(status().isNotFound())
                         .andExpect(content().string("Author with id 1 not found"));
@@ -80,7 +81,7 @@ class AuthorControllerTest {
 
     @Test
     void getByEmailSuccessful() throws Exception {
-        when(authorService.getAuthorByEmail(author.getAuthor_email())).thenReturn(author);
+        when(authorService.getAuthorByEmail(author.getAuthor_email())).thenReturn(new AuthorDTO());
         mockMvc.perform(get("/api/authors/email")
                         .content(author.getAuthor_email())
                         .contentType(MediaType.APPLICATION_JSON))

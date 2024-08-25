@@ -2,33 +2,37 @@ package com.sumerge.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.sumerge.exceptions.AlreadyExistException;
+import com.sumerge.exceptions.GlobalExceptionHandler;
 import com.sumerge.exceptions.NotFoundException;
-import com.sumerge.services.AuthorService;
+import com.sumerge.mappers.CourseMapper;
 import com.sumerge.services.CourseService;
-import com.sumerge.task3.DatabaseClasses.Author;
+
 import com.sumerge.task3.DatabaseClasses.Course;
-import com.sumerge.task3.DatabaseClasses.CourseDTO;
+import com.sumerge.task3.DTOs.CourseDTO;
 import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+//@SpringBootTest
 @WebMvcTest(CourseController.class)
 @ContextConfiguration(classes =CourseController.class)
-@ComponentScan("com.sumerge.exceptions")
+@Import(GlobalExceptionHandler.class)
 class CourseControllerTest {
 
     @Autowired
@@ -42,8 +46,7 @@ class CourseControllerTest {
     private ObjectMapper objectMapper;
 
     private Course course;
-//    @Autowired
-//    private AuthorService authorService;
+
 
 
     @BeforeEach
@@ -57,14 +60,14 @@ class CourseControllerTest {
 
     @Test
     void viewCourseById_Successful()throws Exception {
-        when(courseService.getCourseById(1)).thenReturn(course);
+        when(courseService.getCourseByIdDTO(1)).thenReturn(new CourseDTO());
         mockMvc.perform(get("/api/courses/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void viewCourseById_NotSuccessful() throws Exception {
-        when(courseService.getCourseById(1))
+        when(courseService.getCourseByIdDTO(1))
                 .thenThrow(new NotFoundException("course with id 1 not found"));
 
         mockMvc.perform(get("/api/courses/1"))
@@ -74,10 +77,10 @@ class CourseControllerTest {
 
     @Test
     void getRecommendedCourses_Successful() throws Exception {
-        List<Course> recommendedCourses = new ArrayList<>();
-        Course course2 = new Course();
-        recommendedCourses.add(course);
-        recommendedCourses.add(course2);
+        List<CourseDTO> recommendedCourses = new ArrayList<>();
+        recommendedCourses.add(new CourseDTO());
+        recommendedCourses.add(new CourseDTO());
+
         when(courseService.getRecommendedCourses()).thenReturn(recommendedCourses);
         mockMvc.perform(get("/api/courses/recommended"))
                 .andExpect(status().isOk());
@@ -92,7 +95,7 @@ class CourseControllerTest {
 
     @Test
     void addCourse_Successful() throws Exception {
-        when(courseService.addCourse(course)).thenReturn(course);
+        when(courseService.addCourse(course)).thenReturn(new CourseDTO());
         mockMvc.perform(post("/api/courses/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(course)))
@@ -102,7 +105,7 @@ class CourseControllerTest {
     @Test
     void updateCourse_Successful() throws Exception {
         when(courseService.getCourseById(1)).thenReturn(course);
-        when(courseService.updateCourse(1,course)).thenReturn(course);
+        when(courseService.updateCourse(1,course)).thenReturn(new CourseDTO());
         mockMvc.perform(put("/api/courses/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(course)))
@@ -110,7 +113,8 @@ class CourseControllerTest {
     }
     @Test
     void updateCourse_NotSuccessful() throws Exception {
-        when(courseService.getCourseById(1)).thenThrow(new NotFoundException("No course with this id found !"));
+        when(courseService.updateCourse(eq(1), any(Course.class))).thenThrow(new NotFoundException("course with id 1 not found"));
+
         mockMvc.perform(put("/api/courses/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(course)))
@@ -135,7 +139,7 @@ class CourseControllerTest {
 
     @Test
     void assignAuthorToCourse_Successful() throws Exception{
-      when(courseService.addAuthorToCourse(1,1)).thenReturn(course);
+      when(courseService.addAuthorToCourse(1,1)).thenReturn(new CourseDTO() );
       mockMvc.perform(put("/api/courses/1/author/1"))
               .andExpect(status().isOk());
     }
@@ -149,7 +153,7 @@ class CourseControllerTest {
 
     @Test
     void assignAssessmentToCourse_Successful() throws Exception{
-        when(courseService.addAssessmentToCourse(1,1)).thenReturn(course);
+        when(courseService.addAssessmentToCourse(1,1)).thenReturn(new CourseDTO());
         mockMvc.perform(put("/api/courses/1/assessment/1"))
                 .andExpect(status().isOk());
     }
@@ -163,7 +167,7 @@ class CourseControllerTest {
 
     @Test
     void assignRatingToCourse_Successful() throws Exception{
-        when(courseService.addRatingToCourse(1,1)).thenReturn(course);
+        when(courseService.addRatingToCourse(1,1)).thenReturn(new CourseDTO());
         mockMvc.perform(put("/api/courses/1/rating/1"))
                 .andExpect(status().isOk());
     }
@@ -192,10 +196,9 @@ class CourseControllerTest {
 
     @Test
     void getCoursesPaginated_Successful() throws Exception {
-        List<Course> courses = new ArrayList<>();
-        Course course2 = new Course();
-        courses.add(course2);
-        courses.add(course);
+        List<CourseDTO> courses = new ArrayList<>();
+        courses.add(new CourseDTO());
+        courses.add(new CourseDTO());
         when(courseService.getPaginatedCourses(0,5)).thenReturn(courses);
         mockMvc.perform(get("/api/courses/paginated"))
                 .andExpect(status().isOk());

@@ -3,6 +3,7 @@ package com.sumerge.controllers;
 
 import com.sumerge.services.AssessmentService;
 import com.sumerge.task3.DatabaseClasses.Assessment;
+import com.sumerge.task3.DTOs.AssessmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +17,17 @@ public class AssessmentController {
     private AssessmentService assessmentService;
 
     @GetMapping("/all")
-    public List<Assessment> getAllRatings() {
+    public List<AssessmentDTO> getAllAssessments() {
         return assessmentService.getAllAssessments();
     }
 
     @GetMapping("/{id}")
-    public Assessment getRating(@PathVariable int id) {
-        return assessmentService.getAssessmentbyId(id);
+    public AssessmentDTO getAssessmentById(@PathVariable int id) {
+        return assessmentService.getAssessmentByIdDto(id);
     }
 
     @PostMapping("/add")
-    public Assessment addRating(@RequestBody Assessment assessment) {
+    public AssessmentDTO addAssessment(@RequestBody Assessment assessment) {
         return assessmentService.addAssessment(assessment);
     }
 

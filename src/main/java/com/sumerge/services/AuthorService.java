@@ -1,6 +1,9 @@
 package com.sumerge.services;
+
 import com.sumerge.exceptions.NotFoundException;
+import com.sumerge.mappers.AuthorMapper;
 import com.sumerge.repos.JPAAuthorRepository;
+import com.sumerge.task3.DTOs.AuthorDTO;
 import com.sumerge.task3.DatabaseClasses.Author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +14,15 @@ public class AuthorService {
     @Autowired
     JPAAuthorRepository jpaAuthorRepository;
 
-    public Author getAuthorByEmail(String email) {
+    @Autowired
+    private AuthorMapper authorMapper;
+
+    public AuthorDTO getAuthorByEmail(String email) {
         Author retrievedAuthor = jpaAuthorRepository.findAuthorByEmail(email).orElse(null);
         if(retrievedAuthor == null){
             throw new NotFoundException("Author with email "+email+" not found");
         }
-        return retrievedAuthor;
+        return authorMapper.authorToAuthorDTO(retrievedAuthor);
     }
     public Author getAuthorById(int id) {
         Author retrievedAuthor = jpaAuthorRepository.findById(id).orElse(null);
@@ -26,7 +32,15 @@ public class AuthorService {
         return jpaAuthorRepository.findById(id).orElse(null);
     }
 
-    public Author addAuthor(Author author) {
+    public AuthorDTO getAuthorByIdDto(int id) {
+        Author retrievedAuthor = jpaAuthorRepository.findById(id).orElse(null);
+        if(retrievedAuthor == null){
+            throw new NotFoundException("Author with id "+id+" not found");
+        }
+        return authorMapper.authorToAuthorDTO(retrievedAuthor);
+    }
+
+    public AuthorDTO addAuthor(Author author) {
         if (author == null) {
             throw new IllegalArgumentException("Author cannot be null.");
         }
@@ -48,6 +62,6 @@ public class AuthorService {
             throw new IllegalArgumentException("Author birthdate cannot be null or empty.");
         }
 
-        return jpaAuthorRepository.save(author);
+        return authorMapper.authorToAuthorDTO(jpaAuthorRepository.save(author));
     }
 }

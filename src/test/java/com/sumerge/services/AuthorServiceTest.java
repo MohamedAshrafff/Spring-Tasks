@@ -1,7 +1,9 @@
 package com.sumerge.services;
 
 import com.sumerge.exceptions.NotFoundException;
+import com.sumerge.mappers.AuthorMapper;
 import com.sumerge.repos.JPAAuthorRepository;
+import com.sumerge.task3.DTOs.AuthorDTO;
 import com.sumerge.task3.DatabaseClasses.Author;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +21,8 @@ class AuthorServiceTest {
     @Mock
     private JPAAuthorRepository jpaAuthorRepository;
 
+    @Mock
+    AuthorMapper authorMapper;
     @InjectMocks
     private AuthorService authorService;
 
@@ -33,8 +37,8 @@ class AuthorServiceTest {
     void getAuthorByEmailFound() {
         Author author = new Author("ahmed","test@test.com","19-5-1998");
         when(jpaAuthorRepository.findAuthorByEmail("test@test.com")).thenReturn(Optional.of(author));
-        Author foundAuthor = authorService.getAuthorByEmail("test@test.com");
-        assertEquals(author ,foundAuthor );
+        AuthorDTO foundAuthor = authorService.getAuthorByEmail("test@test.com");
+        assertEquals(authorMapper.authorToAuthorDTO(author) ,foundAuthor);
     }
 
     @Test
@@ -92,6 +96,26 @@ class AuthorServiceTest {
         Author author = new Author("ahmed","ahmedtest",null);
         assertThrows(IllegalArgumentException.class , () -> authorService.addAuthor(author));
         verify(jpaAuthorRepository, times(0)).save(author);
+    }
+
+    @Test
+    void getAuthorByIdDTO_Successful() {
+        Author author = new Author();
+        author.setAuthor_name("name");
+        AuthorDTO authorDTO = new AuthorDTO();
+        when(jpaAuthorRepository.findById(1)).thenReturn(Optional.of(author));
+        when(authorMapper.authorToAuthorDTO(author)).thenReturn(authorDTO);
+
+        AuthorDTO result = authorService.getAuthorByIdDto(1);
+        System.out.println(result + " " +author);
+        assertEquals(authorDTO, result);
+
+    }
+
+    @Test
+    void getAuthorByIdDTO_NotSuccessful() {
+        when(jpaAuthorRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class , () -> authorService.getAuthorByIdDto(1));
     }
 
 }

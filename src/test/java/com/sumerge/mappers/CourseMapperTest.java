@@ -1,7 +1,7 @@
 package com.sumerge.mappers;
 
 import com.sumerge.task3.DatabaseClasses.Course;
-import com.sumerge.task3.DatabaseClasses.CourseDTO;
+import com.sumerge.task3.DTOs.CourseDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
