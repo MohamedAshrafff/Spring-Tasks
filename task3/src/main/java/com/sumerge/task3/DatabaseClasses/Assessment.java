@@ -1,5 +1,7 @@
 package com.sumerge.task3.DatabaseClasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class Assessment {
     private String assessment_content;
 
     @OneToOne(mappedBy = "assessment")
+    @JsonIgnoreProperties({"course_description", "course_credit", "authors", "assessment", "ratings"}) // Ignore unwanted fields
     private Course course;
 
     public Assessment() {}

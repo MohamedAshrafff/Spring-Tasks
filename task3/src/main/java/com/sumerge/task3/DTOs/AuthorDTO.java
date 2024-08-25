@@ -1,45 +1,20 @@
-package com.sumerge.task3.DatabaseClasses;
+package com.sumerge.task3.DTOs;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sumerge.task3.DatabaseClasses.Course;
 
-import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "author")
-public class Author {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AuthorDTO {
     private int author_id;
     private String author_name;
-    @Column(unique = true)
     private String author_email;
     private String author_birthdate;
-
-    @ManyToMany(mappedBy = "authors")
     @JsonIgnoreProperties({"authors", "assessment", "ratings"})
     private Set<Course> courses  = new HashSet<>();
 
-    public Set<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-
-
-    public Author(){}
-
-    public Author(String author_name, String author_email, String author_birthdate) {
-        this.author_name = author_name;
-        this.author_email = author_email;
-        this.author_birthdate = author_birthdate;
-    }
+    public AuthorDTO() {}
 
     public int getAuthor_id() {
         return author_id;
@@ -65,12 +40,19 @@ public class Author {
         this.author_email = author_email;
     }
 
-
     public String getAuthor_birthdate() {
         return author_birthdate;
     }
 
     public void setAuthor_birthdate(String author_birthdate) {
         this.author_birthdate = author_birthdate;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

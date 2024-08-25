@@ -1,5 +1,8 @@
 package com.sumerge.task3.DatabaseClasses;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +22,7 @@ public class Course {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "assessment_id", referencedColumnName = "assessment_id")
+    @JsonIgnoreProperties({"course"})
     private Assessment assessment = new Assessment();
 
     @ManyToMany
@@ -27,9 +31,11 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
+    @JsonIgnoreProperties("courses")
     private Set<Author> authors = new HashSet<Author>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("course")
     private Set<Rating> ratings = new HashSet<Rating>();
 
     public Course(){}
