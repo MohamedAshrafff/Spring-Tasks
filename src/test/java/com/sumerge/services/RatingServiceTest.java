@@ -1,20 +1,21 @@
 package com.sumerge.services;
 
 import com.sumerge.exceptions.NotFoundException;
+import com.sumerge.mappers.RatingMapper;
 import com.sumerge.repos.JPARatingRepository;
-import com.sumerge.task3.DatabaseClasses.Assessment;
 import com.sumerge.task3.DatabaseClasses.Rating;
+import com.sumerge.task3.DTOs.RatingDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,12 +27,15 @@ class RatingServiceTest {
     @Mock
     JPARatingRepository jpaRatingRepository;
 
+    @Mock
+    RatingMapper ratingMapper;
+
     @InjectMocks
     RatingService ratingService;
 
     @Test
     void getRatingById_Successful() {
-        Rating rating = new Rating();
+       Rating rating = new Rating();
         when(jpaRatingRepository.findById(1)).thenReturn(Optional.of(rating));
         assertDoesNotThrow(()-> ratingService.getRatingById(1));
     }
@@ -68,11 +72,13 @@ class RatingServiceTest {
 
         when(jpaRatingRepository.findAll()).thenReturn(expectedRatings);
 
-        List<Rating> actualAssessments = ratingService.getAllRatings();
+        List<RatingDTO> actualAssessments = ratingService.getAllRatings();
 
         assertNotNull(actualAssessments);
         assertEquals(2, actualAssessments.size());
-        assertEquals(expectedRatings, actualAssessments);
+        assertEquals(expectedRatings.stream()
+                .map(ratingMapper::ratingToRatingDTO)
+                .collect(Collectors.toList()), actualAssessments);
 
         verify(jpaRatingRepository, times(1)).findAll();
 
@@ -84,5 +90,25 @@ class RatingServiceTest {
         assertThrows(NotFoundException.class , () -> ratingService.getAllRatings());
         verify(jpaRatingRepository, times(1)).findAll();
 
+    }
+
+    @Test
+    void getRatingByIdDTO_Successful() {
+        Rating rating = new Rating();
+        rating.setRating_number(2);
+        RatingDTO ratingDTO = new RatingDTO();
+        when(jpaRatingRepository.findById(1)).thenReturn(Optional.of(rating));
+        when(ratingMapper.ratingToRatingDTO(rating)).thenReturn(ratingDTO);
+
+        RatingDTO result = ratingService.getRatingByIdDTO(1);
+        System.out.println(result + " " +ratingDTO);
+        assertEquals(ratingDTO, result);
+
+    }
+
+    @Test
+    void getRatingByIdDTO_NotSuccessful() {
+        when(jpaRatingRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class , () -> ratingService.getRatingByIdDTO(1));
     }
 }

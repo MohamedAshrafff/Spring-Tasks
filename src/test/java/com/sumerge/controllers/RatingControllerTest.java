@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sumerge.exceptions.NotFoundException;
 import com.sumerge.services.RatingService;
 import com.sumerge.task3.DatabaseClasses.Rating;
+import com.sumerge.task3.DTOs.RatingDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -46,9 +47,9 @@ class RatingControllerTest {
     }
     @Test
     void getAllRatings_Successful() throws Exception {
-        List<Rating> ratings = new ArrayList<>();
-        Rating rating1 = new Rating();
-        ratings.add(rating);
+        List<RatingDTO> ratings = new ArrayList<>();
+        RatingDTO rating1 = new RatingDTO();
+        ratings.add(new RatingDTO());
         ratings.add(rating1);
         when(ratingService.getAllRatings()).thenReturn(ratings);
         mockMvc.perform(get("/api/ratings/all")
@@ -72,7 +73,7 @@ class RatingControllerTest {
 
     @Test
     void getRatingById_NotSuccessful() throws Exception {
-        when(ratingService.getRatingById(1)).thenThrow(new NotFoundException("NO Rating Found"));
+        when(ratingService.getRatingByIdDTO(1)).thenThrow(new NotFoundException("NO Rating Found"));
         mockMvc.perform(get("/api/ratings/1"))
                 .andExpect(status().isNotFound());
     }
@@ -80,7 +81,7 @@ class RatingControllerTest {
 
     @Test
     void addRating_Successful() throws Exception {
-        when(ratingService.addRating(rating)).thenReturn(rating);
+        when(ratingService.addRating(rating)).thenReturn(new RatingDTO() );
         mockMvc.perform(post("/api/ratings/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(rating)))

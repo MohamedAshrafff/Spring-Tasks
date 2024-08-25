@@ -1,9 +1,10 @@
 package com.sumerge.controllers;
 
+import com.sumerge.exceptions.NotFoundException;
 import com.sumerge.services.CourseService;
 import com.sumerge.task3.DatabaseClasses.Author;
 import com.sumerge.task3.DatabaseClasses.Course;
-import com.sumerge.task3.DatabaseClasses.CourseDTO;
+import com.sumerge.task3.DTOs.CourseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -18,28 +19,27 @@ public class CourseController {
     CourseService courseService;
 
     @GetMapping("/recommended")
-    public ResponseEntity<List<Course>> getRecommendedCourses() {
+    public ResponseEntity<List<CourseDTO>> getRecommendedCourses() {
        return ResponseEntity.ok(courseService.getRecommendedCourses());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> viewCourseById(@PathVariable int id) {
-        return ResponseEntity.ok(courseService.getCourseById(id));
+    public ResponseEntity<CourseDTO> viewCourseById(@PathVariable int id) {
+        return ResponseEntity.ok(courseService.getCourseByIdDTO(id));
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<Course> addCourse(@RequestBody Course course) {
-        Course newCourse = courseService.addCourse(course);
-        return new ResponseEntity<>(newCourse , HttpStatus.CREATED);
+    public ResponseEntity<CourseDTO> addCourse(@RequestBody Course course) {
+        CourseDTO newCourseDTO = courseService.addCourse(course);
+        return new ResponseEntity<>(newCourseDTO , HttpStatus.CREATED);
     }
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable int id, @RequestBody Course course) {
-        Course newCourse = courseService.getCourseById(id);
-        newCourse = courseService.updateCourse(id, course);
-        return ResponseEntity.ok(newCourse);
+    public ResponseEntity<CourseDTO> updateCourse(@PathVariable int id, @RequestBody Course course) {;
+        CourseDTO newCourseDTO = courseService.updateCourse(id, course);
+        return ResponseEntity.ok(newCourseDTO);
     }
 
 
@@ -49,21 +49,21 @@ public class CourseController {
     }
 
     @PutMapping("/{courseId}/author/{authorId}")
-    public ResponseEntity<Course> AssignAuthorToCourse(@PathVariable int courseId, @PathVariable int authorId) {
-        Course course = courseService.addAuthorToCourse(courseId , authorId);
-        return ResponseEntity.ok(course);
+    public ResponseEntity<CourseDTO> AssignAuthorToCourse(@PathVariable int courseId, @PathVariable int authorId) {
+        CourseDTO courseDTO = courseService.addAuthorToCourse(courseId , authorId);
+        return ResponseEntity.ok(courseDTO);
     }
 
     @PutMapping("/{courseId}/assessment/{assessmentId}")
-    public ResponseEntity<Course> AssignAssessmentToCourse(@PathVariable int courseId, @PathVariable int assessmentId) {
-        Course course = courseService.addAssessmentToCourse(courseId , assessmentId);
-        return ResponseEntity.ok(course);
+    public ResponseEntity<CourseDTO> AssignAssessmentToCourse(@PathVariable int courseId, @PathVariable int assessmentId) {
+        CourseDTO courseDTO = courseService.addAssessmentToCourse(courseId , assessmentId);
+        return ResponseEntity.ok(courseDTO);
     }
 
     @PutMapping("/{courseId}/rating/{ratingId}")
-    public ResponseEntity<Course> AssignRatingToCourse(@PathVariable int courseId, @PathVariable int ratingId) {
-        Course course = courseService.addRatingToCourse(courseId , ratingId);
-        return ResponseEntity.ok(course);
+    public ResponseEntity<CourseDTO> AssignRatingToCourse(@PathVariable int courseId, @PathVariable int ratingId) {
+        CourseDTO courseDTO = courseService.addRatingToCourse(courseId , ratingId);
+        return ResponseEntity.ok(courseDTO);
     }
 
     @GetMapping("/courseDTO/{id}")
@@ -73,7 +73,7 @@ public class CourseController {
     }
 
     @GetMapping("/paginated")
-    public List<Course> getCourses(@RequestParam(defaultValue = "0") int page,
+    public List<CourseDTO> getCourses(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "5") int size) {
         return courseService.getPaginatedCourses(page, size);
     }

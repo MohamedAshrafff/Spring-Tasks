@@ -2,7 +2,10 @@ package com.sumerge.configs;
 
 import com.sumerge.AdvancedCourses;
 import com.sumerge.MidCourses;
+import com.sumerge.mappers.AssessmentMapper;
+import com.sumerge.mappers.AuthorMapper;
 import com.sumerge.mappers.CourseMapper;
+import com.sumerge.mappers.RatingMapper;
 import com.sumerge.services.CourseService;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,6 +45,13 @@ public class AppConfig {
         return Mappers.getMapper(CourseMapper.class);
     }
 
+    @Bean AssessmentMapper assessmentMapper() {return Mappers.getMapper(AssessmentMapper.class);}
+
+    @Bean
+    RatingMapper ratingMapper() {return Mappers.getMapper(RatingMapper.class);}
+
+    @Bean
+    AuthorMapper authorMapper() {return Mappers.getMapper(AuthorMapper.class);}
 
     @Bean(name = "basicRecommenderBean")
     public CourseRecommender basicCoursesRecommender() { return new MidCourses();}
