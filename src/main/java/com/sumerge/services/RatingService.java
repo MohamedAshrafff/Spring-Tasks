@@ -29,7 +29,7 @@ public class RatingService {
     public RatingDTO getRatingByIdDTO(int id) {
         Optional<Rating> rating = jpaRatingRepository.findById(id);
         return ratingMapper.ratingToRatingDTO(rating
-                .orElseThrow(() ->new NotFoundException("No Assessment with such id: " + id)));
+                .orElseThrow(() ->new NotFoundException("No rating with such id: " + id)));
     }
 
     public RatingDTO addRating(Rating rating) {
