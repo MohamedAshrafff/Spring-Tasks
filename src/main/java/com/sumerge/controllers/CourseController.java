@@ -7,6 +7,7 @@ import com.sumerge.task3.DatabaseClasses.Course;
 import com.sumerge.task3.DTOs.CourseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,10 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courses")
 public class CourseController {
-
     @Autowired
     CourseService courseService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/recommended")
     public ResponseEntity<List<CourseDTO>> getRecommendedCourses() {
        return ResponseEntity.ok(courseService.getRecommendedCourses());
