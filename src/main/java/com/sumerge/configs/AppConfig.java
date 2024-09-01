@@ -24,19 +24,6 @@ public class AppConfig {
         return new CourseService(courseRecommender);
     }
 
-    @Bean
-    public CourseMapper courseMapper() {
-        return Mappers.getMapper(CourseMapper.class);
-    }
-
-    @Bean AssessmentMapper assessmentMapper() {return Mappers.getMapper(AssessmentMapper.class);}
-
-    @Bean
-    RatingMapper ratingMapper() {return Mappers.getMapper(RatingMapper.class);}
-
-    @Bean
-    AuthorMapper authorMapper() {return Mappers.getMapper(AuthorMapper.class);}
-
     @Bean(name = "basicRecommenderBean")
     public CourseRecommender basicCoursesRecommender() { return new MidCourses();}
 

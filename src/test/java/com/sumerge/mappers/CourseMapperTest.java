@@ -3,12 +3,13 @@ package com.sumerge.mappers;
 import com.sumerge.task3.DatabaseClasses.Course;
 import com.sumerge.task3.DTOs.CourseDTO;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CourseMapperTest {
 
-    private CourseMapper courseMapper = new CourseMapperImpl();
+    private final CourseMapper courseMapper = Mappers.getMapper(CourseMapper.class);
 
     @Test
     void courseToCourseDTO() {

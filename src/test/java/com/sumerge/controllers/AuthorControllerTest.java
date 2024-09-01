@@ -1,14 +1,18 @@
 package com.sumerge.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sumerge.Task69138Application;
 import com.sumerge.exceptions.NotFoundException;
 
 import com.sumerge.services.AuthorService;
 import com.sumerge.task3.DTOs.AuthorDTO;
 import com.sumerge.task3.DatabaseClasses.Author;
 import org.junit.jupiter.api.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,14 +26,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(AuthorController.class)
-@ContextConfiguration(classes =AuthorController.class)
-@ComponentScan("com.sumerge.exceptions")
+@WebMvcTest(controllers = AuthorController.class , excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@ContextConfiguration(classes = AuthorController.class)
+@ComponentScan("com.sumerge/exceptions")
 class AuthorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
 
     @MockBean
     private AuthorService authorService;
@@ -38,6 +41,7 @@ class AuthorControllerTest {
     private ObjectMapper objectMapper;
 
     private Author author;
+
 
     @BeforeEach
     void setUp() {
