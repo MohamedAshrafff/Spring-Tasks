@@ -4,12 +4,16 @@ import com.sumerge.task3.DatabaseClasses.Course;
 import com.sumerge.task3.DTOs.CourseDTO;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class CourseMapperTest {
 
-    private final CourseMapper courseMapper = Mappers.getMapper(CourseMapper.class);
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Test
     void courseToCourseDTO() {
