@@ -4,12 +4,16 @@ import com.sumerge.task3.DatabaseClasses.Assessment;
 import com.sumerge.task3.DTOs.AssessmentDTO;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class AssessmentMapperTest {
 
-    private final AssessmentMapper assessmentMapper = Mappers.getMapper(AssessmentMapper.class);
+    @Autowired
+    private AssessmentMapper assessmentMapper;
 
     @Test
     void assessmentToAssessmentDTO() {

@@ -4,12 +4,16 @@ import com.sumerge.task3.DatabaseClasses.Author;
 import com.sumerge.task3.DTOs.AuthorDTO;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class AuthorMapperTest {
 
-    private final AuthorMapper authorMapper = Mappers.getMapper(AuthorMapper.class);
+    @Autowired
+    private AuthorMapper authorMapper;
 
     @Test
     void authorToAuthorDTO() {

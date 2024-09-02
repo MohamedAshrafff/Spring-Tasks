@@ -4,6 +4,7 @@ import com.sumerge.task3.DatabaseClasses.Assessment;
 import com.sumerge.task3.DTOs.AssessmentDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 public interface AssessmentMapper {

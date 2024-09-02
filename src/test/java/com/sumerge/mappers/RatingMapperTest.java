@@ -4,12 +4,16 @@ import com.sumerge.task3.DatabaseClasses.Rating;
 import com.sumerge.task3.DTOs.RatingDTO;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class RatingMapperTest {
 
-    private final RatingMapper ratingMapper = Mappers.getMapper(RatingMapper.class);
+    @Autowired
+    private RatingMapper ratingMapper ;
 
     @Test
     void ratingToRatingDTO() {
