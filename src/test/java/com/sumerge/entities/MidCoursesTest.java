@@ -1,4 +1,4 @@
-package com.sumerge;
+package com.sumerge.entities;
 
 import com.sumerge.repos.JPACourseRepository;
 import com.sumerge.task3.DatabaseClasses.Course;

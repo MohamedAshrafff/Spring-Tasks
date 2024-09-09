@@ -1,7 +1,6 @@
-package com.sumerge;
+package com.sumerge.entities;
 
 import com.sumerge.task3.DatabaseClasses.Course;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
